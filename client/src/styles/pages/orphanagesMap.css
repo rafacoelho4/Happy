@@ -40,6 +40,50 @@
     font-weight: 800;
 }
 
+#page-map aside .login-link {
+    margin-top: 20px;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    /* padding-left: 10px; */
+    /* border-left: 10px solid #17d6eb; */
+    position: relative;
+    z-index: 10;
+}
+
+#page-map aside .login-link:hover {
+    color: rgb(211, 255, 248);
+}
+
+#page-map aside .login-link:hover .login-icon {
+    transform: translateX(10px);
+}
+
+/* #page-map aside .login-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: red;
+    width: 10%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+#page-map aside .login-link:hover::before {
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+} */
+
+#page-map aside .login-icon {
+    margin-left: 10px;
+    transition: transform 0.2s ease;
+}
+
 #page-map .create-orph {
     position: absolute;
     right: 40px;

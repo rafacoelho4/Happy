@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiPlus, FiArrowRight } from 'react-icons/fi';
+import { FiPlus, FiArrowRight, FiLogIn } from 'react-icons/fi';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 import mapMarker from '../images/mapMarker.svg';
@@ -45,6 +45,10 @@ function OrphanagesMap() {
           <footer>
               <strong>Ouro Preto</strong>
               <span>Minas Gerais</span>
+              <Link to="/login" className="login-link" >
+                Entrar
+                <FiLogIn size={32} color="#fff" className="login-icon" />
+              </Link>
           </footer>
         </aside>
 

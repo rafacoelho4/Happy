@@ -8,6 +8,7 @@ import '../styles/pages/orphanage.css';
 import Sidebar from '../components/Sidebar';
 import mapIcon from '../utils/mapIcon';
 import api from '../services/api';
+import Page404 from '../pages/Page404';
 
 interface Orphanage {
   name: string,
@@ -51,7 +52,7 @@ export default function Orphanage() {
   }, []);
 
   if(!orphanage) {
-    return <h2>Carregando orfanato</h2>
+    return <Page404 />
   }
 
   return (

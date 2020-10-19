@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+html {
+    --color-primary: #15C3D6;
+    --size-text: 18px;
+    scroll-behavior: smooth;
+}
+
 body {
     color: #fff;
     background: #ebf2f5;
@@ -11,4 +17,8 @@ body {
 
 body, input, button, textarea {
     font: 600 18px Nunito, sans-serif;
+}
+
+.gradient {
+    background: linear-gradient(329.54deg, #29B6D1 0%, #00C7C7 100%);
 }

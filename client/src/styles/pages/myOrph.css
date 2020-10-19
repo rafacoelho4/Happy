@@ -1,0 +1,123 @@
+#my-orph-page {
+    display: flex;
+    flex-direction: column;
+    padding: 5% 12%;
+    color: #8FA7B3;
+    /* position: fixed; */
+    /* margin-left: 200px; */
+}
+
+#my-orph-page header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #D3E2E5;
+
+}
+
+#my-orph-page header h2 {
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 34px;
+    color: #4D6F80;
+}
+
+#my-orph-page header p {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: right;
+    color: #8FA7B3;
+}
+
+#my-orph-page .orphanages-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#my-orph-page .orphanage-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 545px;
+    height: 310px;
+    background: #FFFFFF;
+    border: 1px solid #D3E2E5;
+    border-radius: 20px;
+    margin-top: 30px;
+    /* padding-bottom: 15px; */
+}
+
+#my-orph-page .details-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 20px;
+}
+
+#my-orph-page .details-group p {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 34px;
+    color: #4D6F80;
+}
+
+#my-orph-page .btn-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#my-orph-page .details-group button {
+    width: 48px;
+    height: 48px;
+    background: #EBF2F5;
+    border-radius: 16px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #15C3D6;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#my-orph-page .details-group button:hover {
+    background: #d2e2e9;
+}
+
+#my-orph-page .details-group button .button-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #15C3D6;
+}
+
+#my-orph-page .empty-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 200px;
+}
+
+#my-orph-page .empty-array {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#my-orph-page .empty-array p {
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 34px;
+    text-align: center;
+    color: #8FA7B3;
+}
