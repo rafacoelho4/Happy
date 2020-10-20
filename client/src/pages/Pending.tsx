@@ -1,73 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FiEdit3, FiTrash } from 'react-icons/fi';
 import { Map, Marker, TileLayer } from 'react-leaflet';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import '../styles/pages/myOrph.css';
 import mapIcon from '../utils/mapIcon';
 import emptyState from '../images/emptyState.svg';
-import api from '../services/api';
-import Page404 from '../pages/Page404';
 
-interface User {
-    id: string,
-    orphanages: Array<{
-        name: string,
-        id: number,
-        latitude: number,
-        longitude: number
-    }>
-}
-
-interface OrphanageParams {
-    id: string
-}
-
-const MyOrphanages = () => {
-    const [ user, setUser ] = useState<User>();
-    const params = useParams<OrphanageParams>();
-    
-    let token;
-
-    const carregarOrfanatos = async () => {
-        try {
-            token = localStorage.getItem('@token');
-            console.log(`Recebi o token: ${token}`)
-            const response = await api.get(`/users/${params.id}`, { 
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'authorization': `Bearer ${token}`
-            }}).then(response => {
-                setUser(response.data);
-                console.log(response.data);
-            });
-            console.log(params.id);
-            console.log(response);
-            console.log(user);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    
-    useEffect(() => {
-        token = localStorage.getItem('@token');
-        carregarOrfanatos();
-    }, []);
-
-    if(!user?.orphanages) {
-        return <Page404 />
-    }
+const Pending = () => {
+    const [ pending, setPending ] = useState([1]);
 
     return(
         <div id="my-orph-page">
             <header>
-                <h2>Orfanatos cadastrados</h2>
-                <p>{`${user.orphanages.length}`} orfanatos</p>
+                <h2>Orfanatos pendentes</h2>
+                <p>{`${pending.length}`} orfanatos</p>
             </header>
 
-            <div className={user.orphanages.length == 0 ? "empty-container" : "orphanages-container"}>
+            <div className={pending.length === 0 ? "empty-container" : "orphanages-container"}>
                 {
-                    user.orphanages.length == 0 ? 
+                    pending.length === 0 ? 
                     (
                         <div className="empty-array">
                             <img src={emptyState} alt="Logo"/>
@@ -75,9 +27,9 @@ const MyOrphanages = () => {
                         </div>
                     ) :
                     (
-                        user.orphanages.map((orphanage) => {
+                        pending.map((orphanage, index) => {
                             return(
-                                <div className="orphanage-group" key={orphanage.id} >
+                                <div className="orphanage-group" key={index} >
                                     <Map 
                                         center={[-20.386439,-43.5117524]} 
                                         style={{ width: '100%', height: 280 }}
@@ -87,7 +39,7 @@ const MyOrphanages = () => {
                                         <Marker interactive={false} icon={mapIcon} position={[-20.386439,-43.5117524]} />
                                     </Map>
                                     <div className="details-group">
-                                        <p>{`${orphanage.name}`}</p>
+                                        <p>Orfanato Esperança</p>
                                         <div className="btn-group">
                                             <button>
                                                 <Link to="/edit/1" className="button-link">
@@ -95,7 +47,7 @@ const MyOrphanages = () => {
                                                 </Link>
                                             </button>
                                             <button>
-                                                <Link to={`/delete/${user.id}/${orphanage.id}`} className="button-link">
+                                                <Link to="/delete/1" className="button-link">
                                                     <FiTrash size={24} />
                                                 </Link>
                                             </button>
@@ -111,4 +63,4 @@ const MyOrphanages = () => {
     );
 }
 
-export default MyOrphanages;
+export default Pending;

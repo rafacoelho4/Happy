@@ -11,10 +11,11 @@ const upload = multer(uploadConfig);
 
 routes.get('/orphanages', OrphanageController.index);
 routes.get('/orphanages/:id', OrphanageController.show);
-routes.post('/orphanages', upload.array('images'), OrphanageController.create);
+routes.post('/orphanages', authMiddleware, upload.array('images'), OrphanageController.create);
 routes.delete('/orphanages/:id', OrphanageController.destroy);
 
 routes.get('/users', UserController.index);
+routes.get('/users/:id', authMiddleware, UserController.show);
 routes.post('/users', UserController.create);
 routes.delete('/users/:id', UserController.destroy);
 

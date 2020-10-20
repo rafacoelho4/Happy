@@ -45,7 +45,19 @@ export default {
                 instructions,
                 opening_hours,
                 open_on_weekends,
+                user_id
             } = request.body;
+
+            console.log({
+                name,
+                latitude,
+                longitude,
+                about,
+                instructions,
+                opening_hours,
+                open_on_weekends,
+                user_id
+            });
 
             const orphanagesRepository = getRepository(Orphanage);
 
@@ -62,25 +74,27 @@ export default {
                 instructions,
                 opening_hours,
                 open_on_weekends: open_on_weekends == 'true',
-                images
+                images,
+                user_id
             };
 
-            // const schema = Yup.object().shape({
-            //     name: Yup.string().required(),
-            //     latitude: Yup.number().required(),
-            //     lagitude: Yup.string().required(),
-            //     about: Yup.string().required().max(300),
-            //     instructions: Yup.string().required(),
-            //     opening_hours: Yup.string().required(),
-            //     open_on_weekends: Yup.boolean().required(),
-            //     images: Yup.array(Yup.object().shape({
-            //         path: Yup.string().required()
-            //     }))
-            // });
+            const schema = Yup.object().shape({
+                name: Yup.string().required(),
+                latitude: Yup.number().required(),
+                longitude: Yup.string().required(),
+                about: Yup.string().required().max(300),
+                instructions: Yup.string().required(),
+                opening_hours: Yup.string().required(),
+                open_on_weekends: Yup.boolean().required(),
+                images: Yup.array(Yup.object().shape({
+                    path: Yup.string().required()
+                })),
+                user_id: Yup.string().required()
+            });
 
-            // await schema.validate(data, {
-            //     abortEarly: false
-            // });
+            await schema.validate(data, {
+                abortEarly: false
+            });
 
             const orphanage = orphanagesRepository.create();
 
@@ -89,7 +103,8 @@ export default {
             return response.status(201).json(orphanage);
 
         } catch (error) {
-            return response.status(400).send({"error": "ERROR: Not possible to create orphanage"});
+            return response.status(400).json(error);
+            // return response.status(400).send({"error": "ERROR: Not possible to create orphanage"});
         }
     },
 

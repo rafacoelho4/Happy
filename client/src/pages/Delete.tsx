@@ -1,31 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 
 import '../styles/pages/delete.css';
 import excluir from '../images/excluir.svg';
 import api from '../services/api';
+import Page404 from '../pages/Page404';
 
 interface Orphanage {
-  name: string,
+    id: number,
+    name: string,
 }
 
 interface OrphanageParams {
-  id: string
+    id: string
 }
 
 const Delete = () => {
+    const history = useHistory();
+
     const params = useParams<OrphanageParams>();
     const [orphanage, setOrphanage] = useState<Orphanage>();
 
     const carregarOrfanato = async () => {
         try {
-        const response = await api.get(`/orphanages/${params.id}`).then(response => {
-            setOrphanage(response.data);
-        });
-        console.log(response);
-        console.log(orphanage);
+            const response = await api.get(`/orphanages/${params.id}`).then(response => {
+                setOrphanage(response.data);
+            });
+            console.log(response);
+            console.log(orphanage);
         } catch (error) {
-        console.log(error);
+            console.log(error);
+        }
+    }
+
+    async function handleDelete() {
+        try {
+            await api.delete(`/orphanages/${params.id}`).then(response => {
+                console.log(response);
+            });
+            alert('Orfanato deletado');
+            if(!orphanage) {
+                return <Page404 />
+            }
+            history.goBack()
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -48,10 +67,8 @@ const Delete = () => {
                         </Link>
                     </button>
 
-                    <button className="delete-container">
-                        <Link to="/app" className="button-link-delete">
-                            Sim, quero excluir!
-                        </Link>
+                    <button className="delete-container" onClick={handleDelete}>
+                        Sim, quero excluir!
                     </button>
                 </div>
             </main>

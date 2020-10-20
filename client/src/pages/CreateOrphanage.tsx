@@ -1,7 +1,7 @@
-import React, { ChangeEvent, EventHandler, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { FiPlus, FiX } from "react-icons/fi";
 
 import '../styles/pages/create-orphanage.css';
@@ -9,8 +9,13 @@ import Sidebar from '../components/Sidebar';
 import mapIcon from '../utils/mapIcon';
 import api from '../services/api';
 
+interface UserParams {
+  id: string
+}
+
 export default function CreateOrphanage() {
   const history = useHistory();
+  const params = useParams<UserParams>();
   
   const [ name, setName ] = useState('');
   const [ about, setAbout ] = useState('');
@@ -20,6 +25,10 @@ export default function CreateOrphanage() {
   const [ position, setPosition ] = useState({ lat: 0, lng: 0});
   const [ images, setImages ] = useState<File[]>([]);
   const [ previewImages, setPreviewImages ] = useState<string[]>([]);
+
+  const [ authToken, setAuthToken ] = useState('');
+
+  let token = '';
 
   function handleMapClick(event: LeafletMouseEvent) {
     setPosition(event.latlng);
@@ -64,18 +73,30 @@ export default function CreateOrphanage() {
       data.append('longitude', String(lng));
       data.append('opening_hours', opening_hours);
       data.append('open_on_weekends', String(open_on_weekends));
+      data.append('user_id', params.id);
 
       images.forEach(image => {
         data.append('images', image)
       })
-
-      await api.post('/orphanages', data);
+      console.log(`Bearer ${authToken}`)
+      await api.post('/orphanages', data, { 
+        headers: { 
+            'Content-Type': 'application/json',
+            'authorization': `Bearer ${authToken}`
+      }});
       alert('Cadastro realizado');
       history.push('/success');
     } catch (error) {
         console.log(error);
     }
   }
+
+  useEffect(() => {
+    token = localStorage.getItem('@token') as string;
+    console.log(`Token: ${token}`);
+    setAuthToken(token);
+    token = '';
+  }, [token]);
 
   return (
     <div id="page-create-orphanage">
@@ -97,7 +118,7 @@ export default function CreateOrphanage() {
               <TileLayer url="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
               {
-                position.lat != 0 && <Marker interactive={false} icon={mapIcon} position={[position.lat,position.lng]} />
+                position.lat !== 0 && <Marker interactive={false} icon={mapIcon} position={[position.lat,position.lng]} />
               }
             </Map>
 

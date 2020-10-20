@@ -41,7 +41,8 @@
 }
 
 #page-map aside .login-link {
-    margin-top: 20px;
+    margin-top: 40px;
+    font-size: 20px;
     color: #fff;
     text-decoration: none;
     display: flex;
@@ -84,10 +85,7 @@
     transition: transform 0.2s ease;
 }
 
-#page-map .create-orph {
-    position: absolute;
-    right: 40px;
-    bottom: 40px;
+#page-map .floating-btn {
     width: 64px;
     height: 64px;
     border-radius: 20px;
@@ -99,9 +97,21 @@
     z-index: 10;
 }
 
-#page-map .create-orph:hover {
+#page-map .floating-btn:hover {
     background: #17d6eb;
     right: 35px;
+}
+
+#page-map .create-orph {
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+}
+
+#page-map .logout {
+    position: absolute;
+    right: 40px;
+    top: 40px;
 }
 
 #page-map .map-popup .leaflet-popup-content-wrapper {

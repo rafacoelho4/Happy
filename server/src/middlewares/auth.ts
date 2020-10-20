@@ -7,7 +7,7 @@ export default (request: Request, response:Response, next: NextFunction) => {
     const authHeader = request.headers.authorization;
 
     // Se não existir, retorna erro
-    if (!authHeader) return response.status(401).send({ error: "Token não informado" });
+    if (!authHeader) return response.status(400).send({ error: "Token não informado" });
 
     // O authorization deve vir no formato "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2MDAxMzc3MTMsImV4cCI6MTYwMDIyNDExM30.pls4iMk5TPv25rvlaAGJAbpAnBGhuFQ1_uWV4lTjuog
     // Aqui estou separando em duas strings pelo espaço
@@ -21,12 +21,12 @@ export default (request: Request, response:Response, next: NextFunction) => {
 
     // Rejex - Verificando se a palavra "Bearer" está em scheme
     if (!/^Bearer$/i.test(scheme)) {
-        return response.status(401).send({ error: "Erro na formatação" });
+        return response.status(402).send({ error: "Erro na formatação" });
     }
 
     // Verificando se o meu token foi gerado pela minha chave única, minha secret
     jwt.verify(token, authConfig.secret, (err, decoded) => {
-        if (err) return response.status(401).send({ error: "Token inválido" });
+        if (err) return response.status(403).send({ error: "Token inválido" });
 
         // request.userId = decoded.id;
         // next() faz pular pro controller

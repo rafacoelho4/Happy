@@ -22,7 +22,7 @@ export default function DashboardSidebar() {
                 </button>
 
                 <button type="button">
-                    <Link to="/user/1" className="dashboard-link">
+                    <Link to="/user/pending/1" className="dashboard-link">
                         <FiAlertCircle size={24} color="#FFF" />
                     </Link>
                 </button>

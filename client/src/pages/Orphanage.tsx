@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { FiClock, FiInfo } from "react-icons/fi";
 import { Map, Marker, TileLayer } from "react-leaflet";
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import '../styles/pages/orphanage.css';
 import Sidebar from '../components/Sidebar';
@@ -30,7 +30,7 @@ interface OrphanageParams {
 
 export default function Orphanage() {
   const params = useParams<OrphanageParams>();
-  const { goBack } = useHistory();
+  // const { goBack } = useHistory()
 
   const [orphanage, setOrphanage] = useState<Orphanage>();
   const [activeImage, setActiveImage] = useState(0);
@@ -67,7 +67,7 @@ export default function Orphanage() {
               orphanage.images.map((image, index) => {
                 return(
                   <button 
-                    className={activeImage == index ? "active" : ""}  
+                    className={activeImage === index ? "active" : ""}  
                     type="button" 
                     key={image.id}
                     onClick={() => setActiveImage(index)}
@@ -118,9 +118,9 @@ export default function Orphanage() {
                 <FiClock size={32} color="#15B6D6" />
                 {orphanage.opening_hours}
               </div>
-              <div className={orphanage.open_on_weekends == true ? "open-on-weekends" : "not-open-on-weekends"} >
-                <FiInfo size={32} color={orphanage.open_on_weekends == true ? "#39CC83" : "#fa6a72"} />
-                {orphanage.open_on_weekends == true ? "Atendemos fim de semana" : "Não atendemos fim de semana"}
+              <div className={orphanage.open_on_weekends === true ? "open-on-weekends" : "not-open-on-weekends"} >
+                <FiInfo size={32} color={orphanage.open_on_weekends === true ? "#39CC83" : "#fa6a72"} />
+                {orphanage.open_on_weekends === true ? "Atendemos fim de semana" : "Não atendemos fim de semana"}
               </div>
             </div>
 

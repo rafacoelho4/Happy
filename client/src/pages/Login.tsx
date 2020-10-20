@@ -11,7 +11,11 @@ const Login = () => {
     const [ email, setEmail ] = useState('');
     const [ senha, setSenha ] = useState('');
     const [ rememberPassword, setRememberPassword ] = useState(false);
+
+    const [errorStatus, setErrorStatus] = useState('');
+
     let id = '';
+    let token = '';
 
     function handleEmail(e: any) {
         e.preventDefault();
@@ -25,23 +29,38 @@ const Login = () => {
         console.log(senha);
     }
 
-    async function handleSubmit(e: FormEvent) {
+    async function handleSubmit(e: any) {
         e.preventDefault();
         try {
-            const data = {
-                email, 
+            await api.post('/auth', {
+                email,
                 senha,
                 remember_me: rememberPassword
-            };
-            const response = await api.post('/auth', data).then(res => {
+            }).then(async res => {
                 console.log(res);
                 id = res.data.user.id;
+                token = res.data.token;
+                console.log(token);
                 console.log(id);
-            })
+                localStorage.setItem('@token', token);
+                localStorage.setItem('@user_id', id);
+                token = '';
+                history.push(`/user/${id}`);
+                id = '';
+            });
         } catch (error) {
-            console.log(error);
+            let split = error.message.split(' ');
+            let status = split[5];
+            console.log(status);
+            setErrorStatus(status);
+            if(status === '404') {
+                alert('Nome de usuário não encontrado. Tente novamente.')
+            } else if (status === '400') {
+                alert('Senha inválida. Tente novamente.')
+            } else {
+                alert('Erro ao fazer login. Tente novamente.')
+            }
         }
-        history.push(`/user/${id}`);
     }
 
     return(
@@ -98,7 +117,7 @@ const Login = () => {
                         </div>
                     </fieldset>
 
-                    <button className="confirm-button" type="submit" onClick={handleSubmit}>
+                    <button className="confirm-button" type="submit" onClick={e => handleSubmit(e)}>
                         Entrar
                     </button>
                 </form>
