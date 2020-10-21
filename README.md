@@ -49,4 +49,6 @@ No link a seguir você encontra o guia no Notion referente aos desafios proposto
 
 ---
 
+`© 2020 Rocketseat`
+
 > Feito com ♥ by Rafael Coelho Monte Alto
