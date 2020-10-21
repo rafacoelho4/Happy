@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { getConnection, getRepository } from 'typeorm';
 import Orphanage from '../models/Orphanage';
 import orphanageView from '../views/orphanages_view';
 import * as Yup from 'yup';
@@ -47,17 +47,6 @@ export default {
                 open_on_weekends,
                 user_id
             } = request.body;
-
-            console.log({
-                name,
-                latitude,
-                longitude,
-                about,
-                instructions,
-                opening_hours,
-                open_on_weekends,
-                user_id
-            });
 
             const orphanagesRepository = getRepository(Orphanage);
 
@@ -123,4 +112,39 @@ export default {
             return response.status(400).send({"error": "ERROR: Not possible to delete orphanage"});
         }
     },
+
+    async update (request: Request, response: Response) {
+        try {
+            const { id } = request.params;
+
+            const {
+                name,
+                latitude,
+                longitude,
+                about,
+                instructions,
+                opening_hours,
+                open_on_weekends,
+            } = request.body;
+
+            await getConnection()
+                .createQueryBuilder()
+                .update(Orphanage)
+                .set({
+                    name,
+                    latitude,
+                    longitude,
+                    about,
+                    instructions,
+                    opening_hours,
+                    open_on_weekends,
+                })
+                .where("id = :id", { id: id })
+                .execute();
+
+            return response.status(200).json(id);
+        } catch (error) {
+            return response.status(400).send(error);
+        }
+    }
 }

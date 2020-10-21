@@ -9,6 +9,9 @@ export default {
     },
 
     renderMany(images : Image[]) {
+        if(!images) {
+            return []
+        }
         return images.map(image => this.render(image));
     }
 };

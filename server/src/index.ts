@@ -13,6 +13,5 @@ app.use(cors());
 app.use(routes);
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
-
 const PORT = 3333;
 app.listen(PORT, () => console.log(`Escutando na porta ${PORT}`));

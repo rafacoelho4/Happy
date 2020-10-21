@@ -6,7 +6,7 @@ export default {
         return {
             id: user.id,
             email: user.email,
-            senha: user.senha,
+            // senha: user.senha,
             orphanages: orphanagesView.renderMany(user.orphanages)
         };
     },

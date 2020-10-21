@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import User from '../models/User';
 import userView from '../views/users_view';
+import jwt from 'jsonwebtoken';
+import authConfig from '../config/auth';
 
 export default {
     async index (request: Request, response: Response) {
@@ -13,23 +15,11 @@ export default {
             const users = await usersRepository.find({
                 relations: ['orphanages']
             });
-
-            return response.status(200).json(users);
+        
+            return response.status(200).json(userView.renderMany(users));
         } catch (error) {
             return response.status(400).send(error);
         }
-
-        // try {
-        //     const usersRepository = getRepository(User);
-
-        //     const users = await usersRepository.find({
-        //         relations: ['orphanages']
-        //     });
-        
-        //     return response.status(200).json(userView.renderMany(users));
-        // } catch (error) {
-        //     return response.status(400).send(error);
-        // }
     },
 
     async show (request: Request, response: Response) {
@@ -42,8 +32,8 @@ export default {
                 relations: ['orphanages']
             });
 
-            return response.status(200).json(user);
-            // return response.status(200).json(userView.render(user));
+            // return response.status(200).json(user);
+            return response.status(200).send(userView.render(user));
 
         } catch (error) {
             return response.status(400).send(error);
@@ -69,11 +59,16 @@ export default {
                 orphanages: []
             };
 
+            const token = await jwt.sign({ id: user.id }, authConfig.secret, {
+                // O token expira em um dia, ou 86400 segundos
+                expiresIn: 86400,
+            })
+
             await usersRepository.save(data);
 
-            return response.status(201).json(user);
+            return response.status(201).json({id, token: token});
         } catch (error) {
-            return response.status(400).send(error);
+            return response.status(406).send(error);
         }
     },
 
