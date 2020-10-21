@@ -6,7 +6,6 @@
   <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-layout">Layout</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#memo-licença">Licença</a>
 </p>
 
 <p align="center">
@@ -49,6 +48,6 @@ No link a seguir você encontra o guia no Notion referente aos desafios proposto
 
 ---
 
-`© 2020 Rocketseat`
+> © 2020 Rocketseat
 
 > Feito com ♥ by Rafael Coelho Monte Alto
