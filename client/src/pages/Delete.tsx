@@ -21,13 +21,15 @@ const Delete = () => {
     const params = useParams<OrphanageParams>();
     const [orphanage, setOrphanage] = useState<Orphanage>();
 
+    const [ authToken, setAuthToken ] = useState('');
+
+    let token = '';
+
     const carregarOrfanato = async () => {
         try {
             const response = await api.get(`/orphanages/${params.id}`).then(response => {
                 setOrphanage(response.data);
             });
-            console.log(response);
-            console.log(orphanage);
         } catch (error) {
             console.log(error);
         }
@@ -35,10 +37,11 @@ const Delete = () => {
 
     async function handleDelete() {
         try {
-            await api.delete(`/orphanages/${params.id}`).then(response => {
-                console.log(response);
-            });
-            alert('Orfanato deletado');
+            await api.delete(`/orphanages/${params.id}`, { 
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${authToken}`
+              }});
             if(!orphanage) {
                 return <Page404 />
             }
@@ -49,8 +52,11 @@ const Delete = () => {
     }
 
     useEffect(() => {
+        token = localStorage.getItem('@token') as string;
+        setAuthToken(token);
+        token = '';
         carregarOrfanato();
-    }, []);
+    }, [token]);
 
     if(!orphanage) {
         return <h2>Carregando orfanato</h2>

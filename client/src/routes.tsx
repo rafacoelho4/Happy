@@ -10,8 +10,9 @@ import Delete from './pages/Delete';
 import Page404 from './pages/Page404';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-// import Pending from './pages/Pending';
-// import Pendente from './pages/Pendente';
+import EditOrphanage from './pages/EditOrphanage';
+import Cadastro from './pages/Cadastro';
+import Logout from './pages/Logout';
 
 const Routes = () => {
     return(
@@ -25,13 +26,14 @@ const Routes = () => {
 
                 <Route path="/success" component={Registered} />
                 <Route path="/delete/:user_id/:id" component={Delete} />
+                <Route path="/edit/:user_id/:id" component={EditOrphanage} />
 
                 <Route path="/login" component={Login} />
+                <Route path="/register" component={Cadastro} />
+                <Route path="/logout" component={Logout} />
+
                 <Route path="/user/:id" component={Dashboard} />
                 <Route path="/user/pending/:id" component={Dashboard} />
-
-                {/* <Route path="/pending" component={Pending}/>
-                <Route path="/ola" component={Pendente}/> */}
 
                 <Route component={Page404} />
                 

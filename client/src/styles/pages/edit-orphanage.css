@@ -1,0 +1,41 @@
+
+form.create-orphanage-form .edit-btn-group {
+  /* background: chartreuse; */
+  display: flex;
+}
+
+form.create-orphanage-form .edit-btn-group button {
+  margin-top: 64px;
+
+  width: 100%;
+  height: 64px;
+  border: 0;
+  cursor: pointer;
+  border-radius: 20px;
+  color: #FFFFFF;
+  font-weight: 800;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: background-color 0.2s;
+}
+
+form.create-orphanage-form .edit-btn-group button.confirm-button {
+  background: #3CDC8C;
+  margin-left: 10px;
+}
+
+form.create-orphanage-form .edit-btn-group button.cancel-button {
+  background: #D6487B;
+  margin-right: 10px;
+}
+
+form.create-orphanage-form .edit-btn-group button.confirm-button:hover {
+  background: #36CF82;
+}
+
+form.create-orphanage-form .edit-btn-group button.cancel-button:hover {
+  background: #c93c6f;
+}

@@ -5,23 +5,39 @@ import { useHistory, useParams } from "react-router-dom";
 import { FiPlus, FiX } from "react-icons/fi";
 
 import '../styles/pages/create-orphanage.css';
+import '../styles/pages/edit-orphanage.css';
 import Sidebar from '../components/Sidebar';
 import mapIcon from '../utils/mapIcon';
 import api from '../services/api';
+
+interface Orphanage {
+  name: string,
+  latitude: number,
+  longitude: number,
+  about: number,
+  instructions: string,
+  opening_hours: string,
+  open_on_weekends: boolean,
+  images: Array<{
+    url: string,
+    id: number
+  }>,
+  user_id: string
+}
 
 interface UserParams {
   id: string
 }
 
-export default function CreateOrphanage() {
+export default function EditOrphanage() {
   const history = useHistory();
   const params = useParams<UserParams>();
-  
+
   const [ name, setName ] = useState('');
   const [ about, setAbout ] = useState('');
   const [ instructions, setInstructions ] = useState('');
   const [ opening_hours, setOpeningHours ] = useState('');
-  const [ open_on_weekends, setOpenOnWeekends ] = useState(true);
+  const [ open_on_weekends, setOpenOnWeekends ] = useState<boolean>();
   const [ position, setPosition ] = useState({ lat: 0, lng: 0});
   const [ images, setImages ] = useState<File[]>([]);
   const [ previewImages, setPreviewImages ] = useState<string[]>([]);
@@ -51,16 +67,13 @@ export default function CreateOrphanage() {
 
   function handleDeleteImage(event: any, index: number) {
     event.preventDefault();
-    // console.log(index);
+    console.log(index);
 
-    const editedPreviewImages = previewImages.splice(index, 1);
-    const editedImages = images.splice(index, 1);
+    const editedImages = previewImages.splice(index, 1);
 
     const selectedImagesPreview = [...previewImages];
-    const selectedImages = [...images];
-    
+
     setPreviewImages(selectedImagesPreview);
-    setImages(selectedImages);
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -78,25 +91,46 @@ export default function CreateOrphanage() {
       data.append('open_on_weekends', String(open_on_weekends));
       data.append('user_id', params.id);
 
-      images.forEach(image => {
-        data.append('images', image)
-      })
-      // console.log(`Bearer ${authToken}`)
-      await api.post('/orphanages', data, { 
+      if(images) {
+        images.forEach(image => {
+          data.append('images', image)
+        })
+      }
+      await api.put(`/orphanages/${params.id}`, data, { 
         headers: { 
             'Content-Type': 'application/json',
             'authorization': `Bearer ${authToken}`
       }});
-      // alert('Cadastro realizado');
-      history.push('/success');
+      // alert('Orfanato editado com sucesso');
+      history.goBack();
     } catch (error) {
         console.log(error);
     }
   }
 
+  const carregarOrfanato = async () => {
+    try {
+      await api.get(`/orphanages/${params.id}`).then(response => {
+        // console.log(response.data);
+        setName(response.data.name);
+        setPosition({lat: response.data.latitude, lng: response.data.longitude})
+        setAbout(response.data.about);
+        setInstructions(response.data.instructions);
+        setOpeningHours(response.data.opening_hours);
+        setOpenOnWeekends(response.data.opening_on_weekends);
+        const imagesPreview = response.data.images.map((image: any) => {
+          return image.url;
+        });
+        setPreviewImages(imagesPreview);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
+    carregarOrfanato();
     token = localStorage.getItem('@token') as string;
-    // console.log(`Token: ${token}`);
     setAuthToken(token);
     token = '';
   }, [token]);
@@ -107,7 +141,7 @@ export default function CreateOrphanage() {
       <main>
         <form className="create-orphanage-form">
           <fieldset>
-            <legend>Dados</legend>
+            <legend>Editar Dados</legend>
 
             <Map 
               center={[-20.386439,-43.5117524]} 
@@ -115,9 +149,6 @@ export default function CreateOrphanage() {
               zoom={15}
               onclick={handleMapClick}
             >
-              {/* <TileLayer 
-                url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
-              /> */}
               <TileLayer url="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
               {
@@ -211,13 +242,18 @@ export default function CreateOrphanage() {
             </div>
           </fieldset>
 
-          <button className="confirm-button" type="submit" onClick={handleSubmit} >
-            Confirmar
-          </button>
+          <div className="edit-btn-group">
+            <button className="cancel-button" onClick={() => history.goBack()} >
+              Cancelar
+            </button>
+
+            <button className="confirm-button" type="submit" onClick={handleSubmit} >
+              Confirmar
+            </button>
+          </div>
+
         </form>
       </main>
     </div>
   );
 }
-
-// return `https://a.tile.openstreetmap.org/${z}/${x}/${y}.png`;

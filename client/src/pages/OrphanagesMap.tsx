@@ -39,8 +39,8 @@ function OrphanagesMap() {
   useEffect(() => {
     token = localStorage.getItem('@token') as string;
     user_id = localStorage.getItem('@user_id') as string;
-    console.log(`Token: ${token}`);
-    console.log(`Id: ${user_id}`);
+    // console.log(`Token: ${token}`);
+    // console.log(`Id: ${user_id}`);
     setId(user_id);
     if(token) setLoggedIn(true);
     else setLoggedIn(false);
@@ -56,7 +56,12 @@ function OrphanagesMap() {
                   <Link to={`/user/${id}`} >
                     <img src={mapMarker} alt="Map Marker"/>
                   </Link>
-                ) : <img src={mapMarker} alt="Map Marker"/>
+                ) : (
+                  <Link to="/" >
+                    <img src={mapMarker} alt="Map Marker"/>
+                  </Link>
+                )
+                // <img src={mapMarker} alt="Map Marker"/>
               }
               <h2>Escolha um orfanato no mapa</h2>
               <p>Muitas crianças estão esperando sua visita :{')'}</p>
@@ -66,10 +71,15 @@ function OrphanagesMap() {
               <span>Minas Gerais</span>
               {
                 loggedIn === true ? '' : (
-                  <Link to="/login" className="login-link" >
-                    Entrar
-                    <FiLogIn size={32} color="#fff" className="login-icon" />
-                  </Link>
+                  <div className="login-group">
+                    <Link to="/register" className="login-link register-link">
+                      Criar conta
+                    </Link>
+                    <Link to="/login" className="login-link" >
+                      Entrar
+                      {/* <FiLogIn size={32} color="#fff" className="login-icon" /> */}
+                    </Link>
+                  </div>
                 )
               }
           </footer>
@@ -120,7 +130,7 @@ function OrphanagesMap() {
 
         {
           loggedIn === true ? (
-            <Link to="/logout" className="floating-btn logout" onClick={() => localStorage.removeItem('@token')}>
+            <Link to="/logout" className="floating-btn logout">
               <FiLogOut size={32} color="#fff" />
             </Link>
           ) : ''

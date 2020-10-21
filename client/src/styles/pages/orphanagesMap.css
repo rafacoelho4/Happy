@@ -40,8 +40,24 @@
     font-weight: 800;
 }
 
-#page-map aside .login-link {
+#page-map aside .login-group{
     margin-top: 40px;
+    display: flex;
+}
+
+#page-map aside .register-link {
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    margin-right: 20px;
+}
+
+#page-map aside .login-link {
     font-size: 20px;
     color: #fff;
     text-decoration: none;

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, Switch, Route, BrowserRouter, useParams } from 'react-router-dom';
-import { FiMapPin, FiAlertCircle, FiPower } from 'react-icons/fi';
+import { FiMapPin, FiAlertCircle, FiPower, FiPlus } from 'react-icons/fi';
 
 // import DashboardSidebar from '../components/DashboardSidebar';
 import '../styles/pages/dashboard.css'
@@ -16,8 +16,8 @@ interface UserParams {
 const Dashboard = () => {
     const params = useParams<UserParams>();
     useEffect(() => {
-        console.log(`Params: ${params}`);
-        console.log(params);
+        // console.log(`Params: ${params}`);
+        // console.log(params);
       }, []);
     return(
         <div id="dashboard-page">
@@ -34,15 +34,21 @@ const Dashboard = () => {
                     </button>
 
                     <button type="button">
+                        <Link to={`/orphanages/create/${params.id}`} className="dashboard-link">
+                            <FiPlus size={24} color="#FFF" />
+                        </Link>
+                    </button>
+
+                    {/* <button type="button">
                         <Link to={`/user/${params.id}/pending`} className="dashboard-link">
                             <FiAlertCircle size={24} color="#FFF" />
                         </Link>
-                    </button>
+                    </button> */}
                 </main>
                 
                 <footer>
                     <button type="button">
-                        <Link to="/app" onClick={() => localStorage.removeItem('@token')} >
+                        <Link to="/logout">
                             <FiPower size={24} color="#FFF" />
                         </Link>
                     </button>

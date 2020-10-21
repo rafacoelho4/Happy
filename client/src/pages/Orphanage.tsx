@@ -38,10 +38,26 @@ export default function Orphanage() {
   const carregarOrfanato = async () => {
     try {
       const response = await api.get(`/orphanages/${params.id}`).then(response => {
-        setOrphanage(response.data);
+        // console.log(response.data);
+        if(response.data.images.length == 0) {
+          const orph = {
+            name: response.data.name,
+            latitude: response.data.latitude,
+            longitude: response.data.longitude,
+            about: response.data.about,
+            instructions: response.data.instructions,
+            opening_hours: response.data.opening_hours,
+            open_on_weekends: response.data.open_on_weekends,
+            images: [{
+              id: 1,
+              url: 'localhost:3000'
+            }]
+          }
+          setOrphanage(orph);
+        } else {
+          setOrphanage(response.data);
+        }
       });
-      console.log(response);
-      console.log(orphanage);
     } catch (error) {
       console.log(error);
     }
@@ -60,24 +76,30 @@ export default function Orphanage() {
       <Sidebar />
       <main>
         <div className="orphanage-details">
-          <img src={orphanage.images[activeImage].url} alt={orphanage.name} />
-
-          <div className="images">
-            {
-              orphanage.images.map((image, index) => {
-                return(
-                  <button 
-                    className={activeImage === index ? "active" : ""}  
-                    type="button" 
-                    key={image.id}
-                    onClick={() => setActiveImage(index)}
-                    >
-                    <img src={image.url} alt={orphanage.name} />
-                  </button>
-                );
-              })
-            }
-          </div>
+          {
+            orphanage.images[0].url === "localhost:3000" ? '' : (
+              <>
+                <img src={orphanage.images[activeImage].url} alt={orphanage.name} />
+                <div className="images">
+                  {
+                    orphanage.images.map((image, index) => {
+                      return(
+                        <button 
+                          className={activeImage === index ? "active" : ""}  
+                          type="button" 
+                          key={image.id}
+                          onClick={() => setActiveImage(index)}
+                          >
+                          <img src={image.url} alt={orphanage.name} />
+                        </button>
+                      );
+                    })
+                  }
+                </div>
+              </>
+            )
+          }
+          
           
           <div className="orphanage-details-content">
             <h1>{orphanage.name}</h1>
@@ -124,10 +146,10 @@ export default function Orphanage() {
               </div>
             </div>
 
-            <button type="button" className="contact-button">
+            {/* <button type="button" className="contact-button">
               <FaWhatsapp size={20} color="#FFF" />
               Entrar em contato
-            </button>
+            </button> */}
           </div>
         </div>
       </main>

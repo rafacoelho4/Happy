@@ -32,20 +32,21 @@ const MyOrphanages = () => {
     const carregarOrfanatos = async () => {
         try {
             token = localStorage.getItem('@token');
-            console.log(`Recebi o token: ${token}`)
+            // console.log(`Bearer ${token}`)
             const response = await api.get(`/users/${params.id}`, { 
                 headers: { 
                     'Content-Type': 'application/json',
-                    'authorization': `Bearer ${token}`
+                    'authorization': `Bearer ${token}`,
             }}).then(response => {
                 setUser(response.data);
-                console.log(response.data);
+                // console.log(`/users/${params.id}`);
+                // console.log("Response:")
+                // console.log(response);
+                // console.log(response.data);
             });
-            console.log(params.id);
-            console.log(response);
-            console.log(user);
+            // console.log(params.id);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     
@@ -90,7 +91,7 @@ const MyOrphanages = () => {
                                         <p>{`${orphanage.name}`}</p>
                                         <div className="btn-group">
                                             <button>
-                                                <Link to="/edit/1" className="button-link">
+                                                <Link to={`/edit/${user.id}/${orphanage.id}`} className="button-link">
                                                     <FiEdit3 size={24} />
                                                 </Link>
                                             </button>

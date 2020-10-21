@@ -1,21 +1,23 @@
-import React, { FormEvent, SyntheticEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { FiArrowLeft, FiEye, FiEyeOff } from 'react-icons/fi';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import icon from '../images/columnLogo.svg';
-import '../styles/pages/login.css';
+import '../styles/pages/cadastro.css';
 import api from '../services/api';
 
-const Login = () => {
+const Cadastro = () => {
     const history = useHistory();
 
     const [ email, setEmail ] = useState('');
     const [ senha, setSenha ] = useState('');
+    const [ confirmSenha, setConfirmSenha ] = useState('');
     const [ rememberPassword, setRememberPassword ] = useState(false);
 
     const [ openSenha, setOpenSenha ] = useState(false);
+    const [ openConfirmSenha, setOpenConfirmSenha ] = useState(false);
 
-    const [errorStatus, setErrorStatus] = useState('');
+    const [ errorStatus, setErrorStatus ] = useState('');
 
     let id = '';
     let token = '';
@@ -23,24 +25,43 @@ const Login = () => {
     function handleEmail(e: any) {
         e.preventDefault();
         setEmail(e.target.value);
+        console.log(email);
     }
 
     function handleSenha(e: any) {
         e.preventDefault();
         setSenha(e.target.value);
+        console.log(senha);
+    }
+
+    function handleConfirmSenha(e: any) {
+        e.preventDefault();
+        setConfirmSenha(e.target.value);
+        console.log(confirmSenha);
+    }
+
+    function showPassword(e: any) {
+        e.preventDefault();
+
     }
 
     async function handleSubmit(e: any) {
         e.preventDefault();
         try {
-            await api.post('/auth', {
+            if (senha !== confirmSenha) {
+                setErrorStatus('409');
+                return;
+            }
+
+            await api.post('/users', {
                 email,
-                senha,
-                remember_me: rememberPassword
+                senha
             }).then(async res => {
-                // console.log(res);
+                console.log(res);
                 id = res.data.id;
                 token = res.data.token;
+                console.log(token);
+                console.log(id);
                 localStorage.setItem('@token', token);
                 localStorage.setItem('@user_id', id);
                 token = '';
@@ -48,15 +69,16 @@ const Login = () => {
                 id = '';
             });
         } catch (error) {
+            console.log(error);
             let split = error.message.split(' ');
             let status = split[5];
+            console.log(status);
             setErrorStatus(status);
-            if(status === '404') {
+            if(status === '406') {
                 // alert('Nome de usuário não encontrado. Tente novamente.')
-            } else if (status === '400') {
+            } else if (status === '409') {
                 // alert('Senha inválida. Tente novamente.')
             } else {
-                // console.log(error);
                 alert('Erro ao fazer login. Tente novamente.')
             }
         }
@@ -80,11 +102,11 @@ const Login = () => {
 
                 <form className="login-form">
                     <fieldset>
-                        <legend>Fazer Login</legend>
+                        <legend>Criar uma conta</legend>
                         <div className="input-block">
                             <label htmlFor="email">E-mail
                                 {
-                                    errorStatus == '404' ? <span className="error-msg">Email inválido</span> : ''
+                                    errorStatus == '406' ? <span className="error-msg">Email já está cadastrado</span> : ''
                                 }
                             </label>
                             <input 
@@ -92,14 +114,13 @@ const Login = () => {
                                 type="email"
                                 value={email}
                                 onChange={handleEmail}
-                                required={true}
-                                className={errorStatus == '404' ? 'error' : ''}
+                                className={errorStatus == '406' ? 'error' : ''}
                                 />
                         </div>
                         <div className="input-block senha">
                             <label htmlFor="senha">Senha
                                 {
-                                    errorStatus == '400' ? <span className="error-msg">Senha incorreta</span> : ''
+                                    errorStatus == '409' ? <span className="error-msg">Esses campos são diferentes</span> : ''
                                 }
                             </label>
                             <input 
@@ -107,9 +128,8 @@ const Login = () => {
                                 type={openSenha ? "text" : "password"}
                                 value={senha}
                                 onChange={handleSenha}
-                                required={true}
-                                className={errorStatus == '400' ? 'error' : ''}
-                                />
+                                className={errorStatus == '409' ? 'error' : ''}
+                            />
                             {
                                 !openSenha ? 
                                 <FiEye 
@@ -124,26 +144,37 @@ const Login = () => {
                                 />
                             }
                         </div>
-                        <div className="input-block lembrar-senha">
-                            <div className="checkbox-container" >
-                                <input 
-                                    type="checkbox" 
-                                    name="checkbox-lembrar"
-                                    id="checkbox"
-                                    className="checkbox"
-                                    checked={rememberPassword}
-                                    onChange={() => setRememberPassword(!rememberPassword)}
-                                    />
-                                <label htmlFor="checkbox" >Lembrar-me</label>
-                            </div>
-                            <Link to="/app" className="link-forgot-password" >
-                                Esqueci minha senha
-                            </Link>
+                        <div className="input-block senha">
+                            <label htmlFor="confirm-senha">Confirmar senha
+                                {
+                                    errorStatus == '409' ? <span className="error-msg">Esses campos são diferentes</span> : ''
+                                }
+                            </label>
+                            <input
+                                id="confirm-senha"
+                                type={openConfirmSenha ? "text" : "password"}
+                                value={confirmSenha}
+                                onChange={handleConfirmSenha}
+                                className={errorStatus == '409' ? 'error' : ''}
+                            />
+                            {
+                                !openConfirmSenha ? 
+                                <FiEye 
+                                    size={22} 
+                                    className="eye-senha"
+                                    onClick={() => setOpenConfirmSenha(!openConfirmSenha)}
+                                /> : 
+                                <FiEyeOff 
+                                    size={22} 
+                                    className="eye-senha"
+                                    onClick={() => setOpenConfirmSenha(!openConfirmSenha)}
+                                />
+                            }
                         </div>
                     </fieldset>
 
                     <button className="confirm-button" type="submit" onClick={e => handleSubmit(e)}>
-                        Entrar
+                        Registrar
                     </button>
                 </form>
             </main>
@@ -151,4 +182,4 @@ const Login = () => {
     );
 }
 
-export default Login;
+export default Cadastro;
