@@ -25,34 +25,51 @@ const Cadastro = () => {
     function handleEmail(e: any) {
         e.preventDefault();
         setEmail(e.target.value);
-        console.log(email);
     }
 
     function handleSenha(e: any) {
         e.preventDefault();
         setSenha(e.target.value);
-        console.log(senha);
     }
 
     function handleConfirmSenha(e: any) {
         e.preventDefault();
         setConfirmSenha(e.target.value);
-        console.log(confirmSenha);
     }
 
     function showPassword(e: any) {
         e.preventDefault();
+    }
 
+    function testEmail (email: string) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
     }
 
     async function handleSubmit(e: any) {
         e.preventDefault();
+        // if (email === '') {
+        //     setErrorStatus('412');
+        //     return;
+        // } else if (senha === '') {
+        //     setErrorStatus('411');
+        //     return;
+        if (senha.length < 4) {
+            setErrorStatus('416');
+            return;
+        } else if (senha.length > 16) {
+            setErrorStatus('413');
+            return;
+        } else if (senha !== confirmSenha) {
+            setErrorStatus('409');
+            return;
+        }
+        const validate = testEmail(email);
+        if(!validate) {
+            setErrorStatus('417');
+            return;
+        }
         try {
-            if (senha !== confirmSenha) {
-                setErrorStatus('409');
-                return;
-            }
-
             await api.post('/users', {
                 email,
                 senha
@@ -60,8 +77,6 @@ const Cadastro = () => {
                 console.log(res);
                 id = res.data.id;
                 token = res.data.token;
-                console.log(token);
-                console.log(id);
                 localStorage.setItem('@token', token);
                 localStorage.setItem('@user_id', id);
                 token = '';
@@ -69,10 +84,9 @@ const Cadastro = () => {
                 id = '';
             });
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             let split = error.message.split(' ');
             let status = split[5];
-            console.log(status);
             setErrorStatus(status);
             if(status === '406') {
                 // alert('Nome de usuário não encontrado. Tente novamente.')
@@ -108,13 +122,19 @@ const Cadastro = () => {
                                 {
                                     errorStatus == '406' ? <span className="error-msg">Email já está cadastrado</span> : ''
                                 }
+                                {
+                                    errorStatus == '412' ? <span className="error-msg">Campo vazio</span> : ''
+                                }
+                                {
+                                    errorStatus == '417' ? <span className="error-msg">Email não existe</span> : ''
+                                }
                             </label>
                             <input 
                                 id="email"
                                 type="email"
                                 value={email}
                                 onChange={handleEmail}
-                                className={errorStatus == '406' ? 'error' : ''}
+                                className={errorStatus == '406' || errorStatus === '412' || errorStatus === '417' ? 'error' : ''}
                                 />
                         </div>
                         <div className="input-block senha">
@@ -122,14 +142,28 @@ const Cadastro = () => {
                                 {
                                     errorStatus == '409' ? <span className="error-msg">Esses campos são diferentes</span> : ''
                                 }
+                                {
+                                    errorStatus == '411' ? <span className="error-msg">Campo vazio</span> : ''
+                                }
+                                {
+                                    errorStatus == '416' ? <span className="error-msg">Senha muito curta</span> : ''
+                                }
+                                {
+                                    errorStatus == '413' ? <span className="error-msg">Senha grande demais</span> : ''
+                                }
                             </label>
                             <input 
                                 id="senha"
                                 type={openSenha ? "text" : "password"}
                                 value={senha}
                                 onChange={handleSenha}
-                                className={errorStatus == '409' ? 'error' : ''}
+                                className={
+                                    errorStatus === '409' || 
+                                    errorStatus === '411' ||
+                                    errorStatus === '416' || 
+                                    errorStatus === '413' ? 'error' : ''}
                             />
+                            <span className="senha-tip">De 4 a 16 caracteres</span>
                             {
                                 !openSenha ? 
                                 <FiEye 

@@ -6,6 +6,7 @@ import User from '../models/User';
 import userView from '../views/users_view';
 import jwt from 'jsonwebtoken';
 import authConfig from '../config/auth';
+import validateEmail from '../utils/validateEmail';
 
 export default {
     async index (request: Request, response: Response) {
@@ -43,6 +44,9 @@ export default {
     async create (request: Request, response: Response) {
         try {
             const { email, senha } = request.body;
+
+            const validation = validateEmail(email);
+            if(!validation) return response.status(417).send({ msg: "Email não existe" });
 
             const saltRounds = 8;
             const hash = await bcrypt.hash(senha, saltRounds);

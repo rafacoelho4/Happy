@@ -30,8 +30,25 @@ const Login = () => {
         setSenha(e.target.value);
     }
 
+    function testEmail (email: string) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     async function handleSubmit(e: any) {
         e.preventDefault();
+        if (email == '') {
+            setErrorStatus('412');
+            return;
+        } else if (senha == '') {
+            setErrorStatus('411');
+            return;
+        }
+        const validate = testEmail(email);
+        if(!validate) {
+            setErrorStatus('417');
+            return;
+        }
         try {
             await api.post('/auth', {
                 email,
@@ -86,6 +103,12 @@ const Login = () => {
                                 {
                                     errorStatus == '404' ? <span className="error-msg">Email inválido</span> : ''
                                 }
+                                {
+                                    errorStatus == '412' ? <span className="error-msg">Campo vazio</span> : ''
+                                }
+                                {
+                                    errorStatus == '417' ? <span className="error-msg">Email não existe</span> : ''
+                                }
                             </label>
                             <input 
                                 id="email"
@@ -93,13 +116,16 @@ const Login = () => {
                                 value={email}
                                 onChange={handleEmail}
                                 required={true}
-                                className={errorStatus == '404' ? 'error' : ''}
+                                className={errorStatus == '404' || errorStatus === '412' || errorStatus === '417' ? 'error' : ''}
                                 />
                         </div>
                         <div className="input-block senha">
                             <label htmlFor="senha">Senha
                                 {
                                     errorStatus == '400' ? <span className="error-msg">Senha incorreta</span> : ''
+                                }
+                                {
+                                    errorStatus == '411' ? <span className="error-msg">Campo vazio</span> : ''
                                 }
                             </label>
                             <input 
@@ -108,7 +134,7 @@ const Login = () => {
                                 value={senha}
                                 onChange={handleSenha}
                                 required={true}
-                                className={errorStatus == '400' ? 'error' : ''}
+                                className={errorStatus == '400' || errorStatus === '411' ? 'error' : ''}
                                 />
                             {
                                 !openSenha ? 

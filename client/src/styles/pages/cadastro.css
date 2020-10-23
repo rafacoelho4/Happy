@@ -1,5 +1,6 @@
 #login-page {
     display: flex;
+    overflow-y: hidden;
   }
 
 #login-page aside {
@@ -15,18 +16,6 @@
 #login-page aside p {
     line-height: 28px;
     margin-top: 24px;
-}
-
-#login-page aside .location {
-    display: flex;
-    flex-direction: column;
-    line-height: 34px;
-    margin-top: 140px;
-    text-align: center;
-}
-
-#login-page aside .location strong {
-    font-weight: 800;
 }
 
 #login-page main {
@@ -60,7 +49,7 @@ form.login-form {
   
     background: #FFFFFF;
     border-radius: 20px;
-    padding: 64px 80px;
+    padding: 44px 80px;
     overflow: hidden;
 }
   
@@ -104,6 +93,7 @@ form.login-form .input-block input {
 form.login-form .input-block input {
     height: 64px;
     padding: 0 16px;
+    padding-right: 44px;
 }
 
 form.login-form button.confirm-button {
@@ -159,11 +149,17 @@ form.login-form .eye-senha {
     color: #688b9c;
     position: absolute;
     top: 52px;
-    right: 20px;
+    right: 15px;
     cursor: pointer;
     -moz-user-select: none;
     -webkit-user-select: none; 
     -ms-user-select:none; 
     user-select:none;
     -o-user-select:none;
+    background-color: #F5F8FA;
+}
+
+form.login-form .senha-tip {
+    color: rgba(104, 139, 156, 0.7);
+    font-size: 14px;
 }
