@@ -230,12 +230,12 @@ export default function EditOrphanage() {
               <div className="button-select">
                 <button 
                   type="button" 
-                  className={open_on_weekends ? 'active': ''}
+                  className={open_on_weekends === true ? 'active': ''}
                   onClick={() => setOpenOnWeekends(true)}
                   >Sim</button>
                 <button 
                   type="button"
-                  className={open_on_weekends ? '': 'active'}
+                  className={open_on_weekends === false ? 'active' : ''}
                   onClick={() => setOpenOnWeekends(false)}
                   >Não</button>
               </div>
