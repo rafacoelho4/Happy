@@ -40,24 +40,32 @@ No link a seguir você encontra o guia no Notion referente aos desafios proposto
 
 ## 📁 Instalação
 
+```
+git clone https://github.com/rafacoelho4/Happy.git
+```
+
 ### Frontend
 ```
-git clone https://github.com/rafacoelho4/happy.git
 cd client
 yarn install or npm install
 ```
 
 ### Backend
 ```
-git clone https://github.com/rafacoelho4/happy.git
 cd server
 yarn install or npm install
 ```
 
 ## 📁 Execução
 
+### Frontend
 ```
 yarn start or npm start
+```
+
+### Backend
+```
+yarn dev or npm dev
 ```
 
 ---
