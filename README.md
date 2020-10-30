@@ -38,6 +38,28 @@ No link a seguir você encontra o guia no Notion referente aos desafios proposto
 
 - [Desafio Happy 2.0](https://www.notion.so/Vers-o-2-0-do-Happy-c754db7a4d41469e8c2d00fcf75392c4)
 
+## 📁 Instalação
+
+### Frontend
+```
+git clone https://github.com/rafacoelho4/happy.git
+cd client
+yarn install or npm install
+```
+
+### Backend
+```
+git clone https://github.com/rafacoelho4/happy.git
+cd server
+yarn install or npm install
+```
+
+## 📁 Execução
+
+```
+yarn start or npm start
+```
+
 ---
 
 > © 2020 Rocketseat
