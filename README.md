@@ -34,12 +34,6 @@ No link abaixo você encontra o layout do projeto web. Lembrando que você preci
 
 - [Layout Web](https://www.figma.com/file/mDEbnoojksG4w8sOxmudh3/Happy-Web)
 
-## 🧠 Desafio
-
-No link a seguir você encontra o guia no Notion referente aos desafios propostos para que você possa percorrer a milha extra e incrementar ainda mais essa aplicação. Lá também você encontra um guia mostrando todo o passo a passo de como realizar o deploy tanto do backend quanto do frontend.
-
-- [Desafio Happy 2.0](https://www.notion.so/Vers-o-2-0-do-Happy-c754db7a4d41469e8c2d00fcf75392c4)
-
 ## 📁 Instalação
 
 ```
