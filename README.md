@@ -19,7 +19,7 @@
 ## 💻 Projeto
 
 O Happy é uma aplicação que conecta pessoas à casas de acolhimento institucional para fazer o dia de muitas crianças mais feliz 💜 <br />
-Acesse a plataforma Happy Ouro Preto aqui: [HappyOP](https://happyop.netlify.app)
+Acesse a plataforma Happy Ouro Preto aqui: <a target="_blank" href="https://happyop.netlify.app" >HappyOP<a/>
 
 ## 🚀 Tecnologias
 
