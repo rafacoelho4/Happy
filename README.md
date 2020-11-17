@@ -14,6 +14,10 @@
  <img src="https://github.com/rocketseat-education/nlw-03-omnistack/blob/master/.github/happy.png" alt="PRs welcome!" />
 </p>
 
+<p align="center">
+   <img src="https://img.shields.io/badge/version-1.1.4-blue.svg?cacheSeconds=2592000" />
+</p>
+
 <br>
 
 ## 💻 Projeto
