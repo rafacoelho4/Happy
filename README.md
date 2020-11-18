@@ -16,6 +16,7 @@
 
 <p align="center">
    <img src="https://img.shields.io/badge/version-1.1.4-blue.svg?cacheSeconds=2592000" />
+   <img src="https://img.shields.io/website?down_color=lightgrey&down_message=down&style=flat-square&up_message=running&url=https%3A%2F%2Fhappyop.netlify.app%2F" />
 </p>
 
 <br>
